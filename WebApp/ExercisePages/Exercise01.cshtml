@@ -2,8 +2,10 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Exercise 01");
 
-    var myname = Request.Form["dataentry"];
+    var myname = Request.Form["myname"];
     var thebutton = Request.Form["theButton"];
+   
+    
 }
 
 @section banner {
@@ -12,67 +14,74 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
     //this true path is done IF this page is returning
     //from the previous sending
 
     //IF you have multiple buttons on your form, you SHOULD
     //determine which button was pressed; thus; dictating WHICH
     //logic is to be EXECUTED
+    var foodgroup = Request.Form["FoodGroup"];
     if (thebutton.Equals("submit"))
     {
         //the Press Me button was pressed
-        if (string.IsNullOrEmpty(myname))
+        if ((!string.IsNullOrEmpty(myname)) && foodgroup.IsEmpty())
         {
-            <p style="color:firebrick">You don't have a name?</p>
+            <p style="color:firebrick">Please select a menu item</p>
+        }
+        else if ((string.IsNullOrEmpty(myname)) && (!foodgroup.IsEmpty()))
+        {
+            <p style="color:firebrick">Please enter a name </p>
+        }
+        else if ((string.IsNullOrEmpty(myname)) && foodgroup.IsEmpty())
+        {
+            <p style="color:firebrick">Please enter a name and select a menu item</p>
         }
         else
         {
-            <p>Hello there @myname</p>
+            <p>Hello there @myname I see you selected: <br />
+                <ul>
+                    @foreach (var fooditem in foodgroup.Split(','))
+                    {
+                        <li>@fooditem</li>
+                    }
+                </ul>
+            </p>
         }
     }
     else
     {
         //the Reset button was pressed
         myname = "";
-        <p>You pressed the Reset button</p>
+        <p style="color:firebrick">You pressed the Reset button</p>
     }
 }
-else
-{
-    // use to initialize items on your form BEFORE it is sent
-    // to the user for the FIRST time.
-    <p>IsPost = false</p>
-}
+
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="offset-1">
-            <label id="label1" for="dataentry">Customer Name:</label>&nbsp;&nbsp;
-            <input type="text" id="" name="" value="" />
-            <br /><br />
-            <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-primary">
-                Submit
-            </button>&nbsp;&nbsp;
-            <button type="submit" id="theButton" name="theButton"
-                    value="reset" class="btn btn-light">
-                Reset
-            </button>
+         <div class="col-3">
+            <div>
+                <label id="label1" for="dataentry">Customer Name:</label>&nbsp;&nbsp;
+                <input type="text" id="" name="myname" value="" />
+                <br /><br />
+                <button type="submit" id="theButton" name="theButton"
+                        value="submit" class="btn btn-primary">
+                    Submit
+                </button>&nbsp;&nbsp;
+                <button type="submit" id="theButton" name="theButton"
+                        value="reset" class="btn btn-light">
+                    Reset
+                </button>
+                </div>
+            </div>
+
+        <div class="col-3">
+            <div class="offset-1">
+                <label id="lblFoodGroup">Choice of your meal:</label><br />
+                <input type="checkbox"  name="FoodGroup" value="Steak" />Steak<br />
+                <input type="checkbox"  name="FoodGroup" value="Seafood" />Seafood<br />
+                <input type="checkbox"  name="FoodGroup" value="Vegetables"/>Vegetables<br />
+            </div>
         </div>
     </div>
-</form>
-
-<form id="theform" method="post">
-    <div class="row">
-        <div class="offset-1">
-            <label id="lblFoodGroup">Choice of your meal:</label><br />
-            <input type="checkbox" id="FoodGroup" name="FoodGroup" value="Steak"
-                   @*@(Array.IndexOf(choices.Split(','), "PS4") >= 0 ? "checked" : "")*@ />Steak<br />
-            <input type="checkbox" id="FoodGroup" name="FoodGroup" value="Seafood"
-                   @*@(Array.IndexOf(choices.Split(','), "Computer") >= 0 ? "checked" : "")*@ />Seafood<br />
-            <input type="checkbox" id="FoodGroup" name="FoodGroup" value="Vegetables"
-                   @*@(Array.IndexOf(choices.Split(','), "XBOX One") >= 0 ? "checked" : "")*@ />Vegetables<br />
-        </div>
-
 </form>
