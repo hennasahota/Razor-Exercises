@@ -26,15 +26,15 @@
         //the Press Me button was pressed
         if ((!string.IsNullOrEmpty(myname)) && foodgroup.IsEmpty())
         {
-            <p style="color:firebrick">Please select a menu item</p>
+            <p style="color:#E60909">Please select a menu item</p>
         }
         else if ((string.IsNullOrEmpty(myname)) && (!foodgroup.IsEmpty()))
         {
-            <p style="color:firebrick">Please enter a name </p>
+            <p style="color:#E60909">Please enter a name </p>
         }
         else if ((string.IsNullOrEmpty(myname)) && foodgroup.IsEmpty())
         {
-            <p style="color:firebrick">Please enter a name and select a menu item</p>
+            <p style="color:#E60909">Please enter a name and select a menu item</p>
         }
         else
         {
@@ -52,7 +52,7 @@
     {
         //the Reset button was pressed
         myname = "";
-        <p style="color:firebrick">You pressed the Reset button</p>
+        <p style="color:#E60909">You pressed the Reset button</p>
     }
 }
 
