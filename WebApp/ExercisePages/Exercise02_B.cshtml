@@ -6,10 +6,10 @@
 
     var cid = Request.QueryString["cid"];
 
-    if (string.IsNullOrEmpty(cid))
-    {
-        Response.Redirect("Exercise02.cshtml");
-    }
+    //if (string.IsNullOrEmpty(cid))
+    //{
+    //    Response.Redirect("Exercise02.cshtml");
+    //}
 
     var db = Database.Open("CHINOOK");
 
@@ -32,9 +32,11 @@
 }
 
 
-@if(IsPost)
+@if (IsPost)
 {
-    var artistId = Request.Form["artistChoice"];
+    <p><span style="color:firebrick">is post is true </span></p>
+
+    var artistId = Request.Form["artistList"];
     var fetch = Request.Form["theButton"];
 
     if (fetch.Equals("theButton"))
@@ -45,13 +47,17 @@
         }
         else
         {
-            Response.Redirect("Exercise02_C.cshtml?aid=" + artistId);
+            Response.Redirect("Exercise02_C.cshtml?cid=" + artistId);
         }
     }
 }
+else
+{
+    <p><span style="color:firebrick">is post is false</span></p>
+}
 
-<form id="theForm">
-    <select id="" name="Artists" value="artistChoice">
+<form id="theForm" method="post">
+    <select id="artistList" name="artistList">
         <option name="artistChoice" value="0">Select...</option>
         @foreach (var item in results)
         {
@@ -59,7 +65,7 @@
         }
     </select>
 
-    <button action="Exercise02_C.cshtml" type="submit" name="theButton"
+    <button type="submit" name="theButton"
             value="theButton" class="btn btn-primary">
         Fetch Album
     </button>
