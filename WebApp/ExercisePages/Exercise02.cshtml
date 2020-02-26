@@ -48,7 +48,7 @@
         //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
         //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
 
-        string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
+        string sqlcommand1 = "SELECT ArtistId FROM Artists WHERE Name LIKE @0";
         var partialstring = "%" + artistarg + "%";
         var results = db.Query(sqlcommand1, partialstring);
         //always check if you even have results
@@ -61,6 +61,8 @@
         }
         else
         {
+
+
             //yes products:
             //pass ddl value (CategoryID) to next page
             // to go to another page use Response.Redirect(pagename) (GET method)
@@ -71,6 +73,7 @@
             // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
             //WARNING: value are passed in plain text on Url
             //Response.Redirect("SimpleQueryLikePage2.cshtml?cid=" + artistarg);
+            Response.Redirect("Exercise02_B.cshtml?cid=" + artistarg);
 
         }
     }
@@ -90,7 +93,7 @@ else
                 <input type="text" id="artistArg" name="artistArg"
                        value="@artistarg" placeholder="partial artist name" />
                 <br /><br />
-                <button type="submit" id="theButton" name="theButton"
+                <button action="exercise02_B.cshtml" type="submit" id="theButton" name="theButton"
                         value="submit" class="btn btn-primary">
                     Fetch
                 </button>&nbsp;&nbsp;

@@ -1,0 +1,54 @@
+﻿
+@{
+    Page.Title = "Exercise02_C";
+    Layout = "~/_Layout.cshtml";
+
+    var artistId = Request.QueryString["aid"];
+
+    if (string.IsNullOrEmpty(artistId))
+    {
+        Response.Redirect("Exercise02_B.cshtml");
+    }
+
+    var database = Database.Open("Chinook");
+    var sqlQuery = "SELECT Name "
+                        + "FROM Artists "
+                        + "WHERE ArtistId = @0";
+    var artistName = database.QueryValue(sqlQuery, artistId);
+
+    var sqlSelect = "SELECT AlbumId, Title, ReleaseYear, ReleaseLabel "
+                    + "FROM Albums "
+                    + "WHERE ArtistId = @0 "
+                    + "ORDER BY AlbumId";
+
+    var results = database.Query(sqlSelect, artistId);
+    var webGrid = new WebGrid(results);
+}
+
+@section banner
+{
+    <h1>Exercise 2: Database Query</h1>
+}
+
+<div>
+    <div>
+        <div class="row">
+            <div class="container">
+                <span style="font-size:x-large">
+                    <strong>
+                        Albums for @artistName
+                    </strong>
+                </span>
+                @webGrid.GetHtml(
+               tableStyle: "table table-bordered table-striped table-hover",
+               columns: webGrid.Columns(
+                    webGrid.Column(columnName: "AlbumID", header: "Id"),
+                    webGrid.Column(columnName: "Title", header: "Title"),
+                    webGrid.Column(columnName: "ReleaseYear", header: "released"),
+                    webGrid.Column(columnName: "ReleaseLabel", header: "Label")
+
+             ))
+            </div>
+        </div>
+    </div>
+</div>

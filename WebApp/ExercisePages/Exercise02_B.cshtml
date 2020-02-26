@@ -1,5 +1,68 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 2");
+
+
+
+    var cid = Request.QueryString["cid"];
+
+    if (string.IsNullOrEmpty(cid))
+    {
+        Response.Redirect("Exercise02.cshtml");
+    }
+
+    var db = Database.Open("CHINOOK");
+
+    string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
+    var partialstring = "%" + cid + "%";
+    var results = db.Query(sqlcommand1, partialstring);
+    if (results.Count() == 0)
+    {
+        <p style="color:firebrick">There was no record returned from the Data Base</p>
+    }
+    else
+    {
+        <p style="color:darkgreen">There was @results.Count() record/s returned from the Data Base</p>
+    }
 }
+
+
+@section banner {
+    <h1>@Page.Title</h1>
+}
+
+
+@if(IsPost)
+{
+    var artistId = Request.Form["artistChoice"];
+    var fetch = Request.Form["theButton"];
+
+    if (fetch.Equals("theButton"))
+    {
+        if (artistId.Equals("0"))
+        {
+            <p><span style="color:firebrick">Make a Album selection</span></p>
+        }
+        else
+        {
+            Response.Redirect("Exercise02_C.cshtml?aid=" + artistId);
+        }
+    }
+}
+
+<form id="theForm">
+    <select id="" name="Artists" value="artistChoice">
+        <option name="artistChoice" value="0">Select...</option>
+        @foreach (var item in results)
+        {
+            <option value="@item.ArtistId">@item.Name</option>
+        }
+    </select>
+
+    <button action="Exercise02_C.cshtml" type="submit" name="theButton"
+            value="theButton" class="btn btn-primary">
+        Fetch Album
+    </button>
+</form>
 
 
