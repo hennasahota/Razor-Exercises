@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 1");
-
+    Page.Title = string.Format("Razor - {0}", "Exercise 02A");
+    
     //input variables for web controls
     var artistarg = Request.Form["artistArg"];
     var thebutton = Request.Form["theButton"];
@@ -21,7 +21,7 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
+    //<p>IsPost = true</p>
     if (thebutton.Equals("reset"))
     {
         <p style="color:darkblue">The Reset Button was just Pressed</p>
@@ -77,7 +77,7 @@
 }
 else
 {
-    <p>IsPost = false</p>
+    //<p>IsPost = false</p>
     <p style="color:darkblue">The Data Base has NOT been queried</p>
     artistarg = "";
 }
