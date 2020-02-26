@@ -21,7 +21,7 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
+    //<p>IsPost = true</p>
     if (thebutton.Equals("reset"))
     {
         <p style="color:darkblue">The Reset Button was just Pressed</p>
@@ -34,7 +34,7 @@
         //use the name attribute off your web connection string
 
         var db = Database.Open("Chinook");
-
+        
         //create the sql command to be executed on the database
         //input parameters will be represented by the use of placeholders
         //placeholders are indexes (0, 1, 2,...)

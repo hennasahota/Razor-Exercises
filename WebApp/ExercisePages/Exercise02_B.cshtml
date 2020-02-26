@@ -1,0 +1,78 @@
+﻿@{
+    Page.Title = "Exercise 2";
+    Layout = "~/_Layout.cshtml";
+
+    var database = Database.Open("Chinook");
+    var artistName = Request.Form["ArtistName"];
+    var partialstring = "%" + @artistName + "%";
+    var sqlString = "SELECT ArtistId, Name "
+                        + "FROM Artists "
+                        + "WHERE Name like @0 "
+                        + "ORDER BY Name";
+
+    var results = database.Query(sqlString, partialstring);
+
+    var formButton = Request.Form["formButton"];
+
+    var artistId = Request.Form["artistList"];
+    if (artistId == null)
+        artistId = "0";
+
+
+
+}
+
+@section head
+{
+    <link href="~/Content/StyleSheet.css" rel="stylesheet" />
+}
+
+@section banner
+{
+    <h1>Exercise 2: Database Query</h1>
+}
+
+<div class="container">
+    @if (IsPost)
+    {
+        if (formButton.Equals("albums"))
+        {
+            if (artistId.Equals("0"))
+            {
+                <p><span style="color:firebrick">Make a Album selection</span></p>
+            }
+            else
+            {
+                Response.Redirect("Exercise02_B.cshtml?cid=" + artistId);
+            }
+        }
+        else
+            if (artistName.IsEmpty())
+        {
+            <p><span style="color:firebrick">please enter an artist name (or partial of name) for the search</span></p>
+        }
+        if (results.Count() == 0)
+        {
+            <p><span style="color:firebrick">No Artists Found with "@artistName" in its name</span></p>
+        }
+
+    }
+
+    <form id="Ex02" action="" method="post">
+
+            <div class="col-sm-offset-2">
+                <label for="ArtistSelection">Select your artist</label><br />
+                <select name="artistList">
+                    <option value="@artistId">Select ...</option>
+                    @foreach (var item in results)
+                    {
+                        <option value="@item.ArtistId">@item.Name</option>
+                    }
+                </select><br /><br />
+                <button type="submit" name="formButton" value="albums"
+                        class="btn btn-primary">
+                    Fetch Albums
+                </button>
+            </div>
+    </form>
+</div>
