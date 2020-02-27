@@ -11,7 +11,7 @@
 
     var db = Database.Open("Chinook");
 
-    var artistID = "SELECT artistID, Name "
+    var artistID = "SELECT ArtistId, Name "
             + "FROM Artists "
             + "Order by Name";
     var artistlist = db.Query(artistID);
@@ -19,28 +19,20 @@
 
     //these are validator controls execute on the server side
 
-    Validation.Add("ProductName",
-         Validator.Required("Product name is required"),
-          Validator.StringLength(40, 1, "Product name is limited to 40 characters"));
+    Validation.Add("Title",
+         Validator.Required("Title is required"),
+          Validator.StringLength(160, 1, "Title is limited to 160 characters"));
 
-    Validation.Add("CategoryList",
-         Validator.Range(1, 9, "Category is required"));
-
-    Validation.Add("QuantityPerUnit",
- Validator.StringLength(20, 0, "Quantity per unit is limited to 20 characters"));
+    Validation.Add("ArtistId",
+        Validator.Required("Artist is required"));
 
 
-    Validation.Add("UnitsInStock",
-        Validator.Integer("Units in stock must be a number."),
-        Validator.Range(0, 32767, "Units in stock must be between 0 and 32767"));
+    Validation.Add("Year",
+        Validator.Required("Year is required"),
+        Validator.Range(1950, DateTime.Today.Year, "Release year must greater than 1950"));
 
-    Validation.Add("UnitsOnOrder",
-        Validator.Integer("Units on order must be a number."),
-        Validator.Range(0, 32767, "Units on order must be between 0 and 32767"));
-
-    Validation.Add("ReorderLevel",
-        Validator.Integer("Reorder level must be a number."),
-        Validator.Range(0, 32767, "Reorder level must be between 0 and 32767"));
+    Validation.Add("Label",
+     Validator.StringLength(50, 0, "Label is limited to 50 characters"));
 
     //compare two fields together (ie password)
     //Validation.Add("ConfirmPassword",
@@ -118,19 +110,22 @@ else
 @Html.ValidationSummary()
 <form id="theForm" action="" method="post">
     <div class="row row-cols-2">
+
         <div class="col text-right">
             <label id="lblTitle" for="Title">Title</label>
         </div>
         <div class="col text-left">
             <input type="text" name="Title" value="@title" />
         </div><br />
+
+
         <div class="col text-right">
             <label id="lblArtist" for="Artist">Artist</label>
         </div>
         <div class="col text-left">
             <select name="ArtistID">
                 <option value="0">select...</option>
-                @foreach (var acollectionrow in artistid)
+                @foreach (var acollectionrow in artistlist)
                 {
                     <option value="@acollectionrow.ArtistId">@acollectionrow.Name</option>
                 }
@@ -149,7 +144,7 @@ else
             <label id="lblLabel" for="Label">Label</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="Label" value="@label" step="1" />
+            <input type="text" name="Label" value="@label" />
         </div><br />
 
     </div>
@@ -166,7 +161,7 @@ else
     <script type="text/javascript">
         document.getElementById("theAdd").onclick = ConfirmAdd;
         function ConfirmAdd() {
-            return confirm("Are you sure you want to ADD @productname?");
+            return confirm("Are you sure you want to ADD @title?");
         }
     </script>
 </form>
