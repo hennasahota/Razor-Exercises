@@ -42,9 +42,9 @@
 
 
     var queryStatement = "SELECT AlbumId, Title, ArtistId, ReleaseYear, ReleaseLabel "
-                        + "FROM Albums"
+                        + "FROM Albums "
                         + "WHERE AlbumId = @0";
-    var queryAlbum = db.Query(queryStatement, pid);
+    var queryAlbum = db.QuerySingle(queryStatement, pid);
     if (queryAlbum == null)
     {
         message = "Album NOT found";
@@ -75,7 +75,7 @@
                                 + "Title = @0, "
                                 + "ArtistId = @1, "
                                 + "ReleaseYear = @2, "
-                                + "ReleaseLabel = @3, "                              
+                                + "ReleaseLabel = @3 "                              
                                 + "WHERE AlbumId = @4";
                 var rowsaffected = db.Execute(sqlcommand, title,
                     artistId,
@@ -93,7 +93,7 @@
             }
             else if (thebutton.Equals("delete"))
             {
-                var deleteStatement = "Delete Album WHERE AlbumId = @0";
+                var deleteStatement = "Delete Albums WHERE AlbumId = @0";
 
                 var rows = db.Execute(deleteStatement, albumId);
                 if (rows == 1)
@@ -127,9 +127,9 @@ else //IsPost=false
     {
         albumId = queryAlbum.AlbumId.ToString();
         title = queryAlbum.Title;
-        artistId = queryAlbum.ArtistId == null ? "0" : queryAlbum.ArtistId.ToString();
+        artistId = queryAlbum.ArtistId.ToString();
         releaseYear = queryAlbum.ReleaseYear.ToString();
-        releaseLabel = string.IsNullOrEmpty(queryAlbum.ReleaseLabel) ? "" : queryAlbum.ReleaseLabel;
+        releaseLabel = queryAlbum.ReleaseLabel;
     }
 
 }
